@@ -1,0 +1,115 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title></title>
+
+<link rel="stylesheet" href="css/demo.css" type="text/css" />
+
+<script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+<script type="text/javascript" src="js/awardRotate.js"></script>
+<script type="text/javascript">
+$(function (){
+		
+
+
+	var bRotate = false;
+
+	//概率 分别对应   //加起来的数字要等于100 
+	// 1.  58元现金红包
+	// 2.  28元现金红包
+	// 3.  谢谢参与
+	// 4.  88元现金红包
+	// 5.  58元现金红包
+	// 6.  28元现金红包
+	// 7.  谢谢参与
+	// 8.  88元现金红包
+	var probability = [10,10,10,10,10,20,20,10];
+
+	var rotateFn = function (awards, angles, txt){
+		bRotate = !bRotate;
+		$('#rotate').stopRotate();
+		$('#rotate').rotate({
+			angle:0,
+			animateTo:angles+1800,
+			duration:8000,
+			callback:function (){
+				alert(txt);
+				bRotate = !bRotate;
+			}
+		})
+	};
+
+	var addIncrement = function(count){
+		var totalnum = 0;  
+		for(var i = 0 ; i<count+1;i++){
+			totalnum +=probability[i]; 
+		}
+		return totalnum;
+	}
+
+	var rnd = function(n, m){
+		return Math.floor(Math.random()*(m-n+1)+n)
+	}
+
+	var ranangle = function(num){  //中奖花式角度
+		var angleValue = parseInt(360 / probability.length);
+		var rndq = rnd(num*(angleValue)+1,(num+1)*(angleValue)-1);
+		return rndq;
+	}
+
+	$('.pointer').click(function (){
+
+		if(bRotate)return;
+		
+		var item = rnd(1,100);
+
+		for(var i = 0; i<probability.length;i++){
+			if(item<=addIncrement(i)){
+				item = i;
+				break;
+			}
+		}
+
+		switch (item) {
+			case 0:
+				rotateFn(0, ranangle(0), '58元现金红包');
+				break;
+			case 1:
+				rotateFn(1, ranangle(1), '28元现金红包');
+				break;
+			case 2:
+				rotateFn(2, ranangle(2), '谢谢参与');
+				break;
+			case 3:
+				rotateFn(3, ranangle(3), '88元现金红包');
+				break;
+			case 4:
+				rotateFn(4, ranangle(4), '58元现金红包');
+				break;
+			case 5:	
+				rotateFn(5, ranangle(5), '28元现金红包');
+				break;
+			case 6:
+				rotateFn(6, ranangle(6), '谢谢参与');
+				break;
+			case 7:
+				rotateFn(7, ranangle(7), '88元现金红包');
+				break;
+		}
+	});
+   
+});
+
+</script>
+
+</head>
+<body>
+
+    <div class="turntable-bg">
+        <div class="pointer"><img src="images/pointer.png" alt="pointer"/></div>
+        <div class="rotate" ><img id="rotate" src="images/turntable.png" alt="turntable"/></div>
+    </div>
+	
+</body>
+</html>
